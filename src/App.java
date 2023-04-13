@@ -361,12 +361,17 @@ public int movePlayer(){
       System.out.println("It is now " + playerList[turn + 1].getPlayOrder() + "'s turn.");
       changeTurns();
       
-       if (bankruptPlayers == 3){
-        endGame();
+      for(int i = 0; i < playerList.length; i++){
+        int k = 0;
+       if (playerList[i].money <= 0){
+        k++;
+        if (k == 3){
+          endGame();
+        }
     } else {System.out.println("It is now Player " + playerList[turn].getPlayOrder() + "'s turn.");
       System.out.println("Player " + playerList[turn].getPlayOrder() + "'s money is currently at $" + playerList[turn].money + ".");
         }  
-
+      }
       
       } 
 
@@ -380,6 +385,7 @@ public int movePlayer(){
     for (int j = 0; j < 4; ++j){
       if (playerList[j].money <= 0){
         winStatus = playerList[j].isWinner();
+        System.out.println("Player " + playerList[turn].getPlayOrder() + " wins");
       }
     }
 
@@ -468,6 +474,7 @@ public int movePlayer(){
             System.out.println("You have landed on " +propertyList[i].propertyName+ ".");
             if (propertyList[i].isOwned == false && playerList[turn].money >= propertyList[i].propertyValue){
               System.out.println("It is not owned. Will you buy it?");
+              System.out.println("It costs $" + propertyList[i].propertyValue + ".");
               System.out.println();
               rollBtn.setDisable(true);
               buyBtn.setDisable(false);
@@ -495,6 +502,7 @@ public int movePlayer(){
             System.out.println("You have landed on " +utilityList[i].propertyName+ ".");
             if (utilityList[i].isOwned == false && playerList[turn].money >= utilityList[i].propertyValue){
               System.out.println("It is not owned. Will you buy it?");
+              System.out.println("It costs $" + utilityList[i].propertyValue + ".");
               System.out.println();
               rollBtn.setDisable(true);
               buyBtn.setDisable(false);
@@ -520,6 +528,7 @@ public int movePlayer(){
             System.out.println("You have landed on " +railroadList[i].propertyName+ ".");
             if (railroadList[i].isOwned == false && playerList[turn].money >= railroadList[i].propertyValue){
               System.out.println("It is not owned. Will you buy it?");
+              System.out.println("It costs $" + railroadList[i].propertyValue + ".");
               System.out.println();
               rollBtn.setDisable(true);
               buyBtn.setDisable(false);
