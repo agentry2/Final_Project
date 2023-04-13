@@ -330,12 +330,32 @@ public int movePlayer(){
   public void changeTurns(){
     
     turn = (turn + 1) % 4;
-    System.out.println("It is now Player " + playerList[turn].getPlayOrder() + "'s turn.");
+    playerList[turn].inJail();
+    if (playerList[turn].inJail() == true){
+        System.out.println("Player " + playerList[turn].getPlayOrder() + " is in jail.");
+        jailTurns++;
+        changeTurns();
+        System.out.println("It is now " + playerList[turn].getPlayOrder() + "'s turn.");
+
+        if (jailTurns == 3){
+          jailTurns = 0;
+          System.out.println("Player " + playerList[turn].getPlayOrder() + " is out of jail.");
+        }
+    
+      } else {System.out.println("It is now Player " + playerList[turn].getPlayOrder() + "'s turn.");
     System.out.println("Player " + playerList[turn].getPlayOrder() + "'s money is currently at $" + playerList[turn].money + ".");
-      
+        }  
+
       if (playerList[turn].money <= 0){
       playerList[turn].bankruptPlayer();
       playerList[turn].isBankrupt();
+      for (int i = 0; i < propertyList.length; ++i){
+        if (propertyList[i].propertyOwner == playerList[turn].getPlayOrder()){
+          propertyList[i].isOwned = false;
+          propertyList[i].propertyOwner = null;
+        }
+        
+      }
       System.out.println("Player " + playerList[turn].getPlayOrder() + " is bankrupt. ");
       bankruptPlayers++;
       System.out.println("It is now " + playerList[turn + 1].getPlayOrder() + "'s turn.");
@@ -343,23 +363,15 @@ public int movePlayer(){
       
        if (bankruptPlayers == 3){
         endGame();
-    }
+    } else {System.out.println("It is now Player " + playerList[turn].getPlayOrder() + "'s turn.");
+      System.out.println("Player " + playerList[turn].getPlayOrder() + "'s money is currently at $" + playerList[turn].money + ".");
+        }  
 
-      if (playerList[turn].inJail() == true){
-        System.out.println("Player " + playerList[turn].getPlayOrder() + " is in jail.");
-        jailTurns++;
-        System.out.println("It is now " + playerList[turn + 1].getPlayOrder() + "'s turn.");
+      
+      } 
 
-        if (jailTurns == 3){
-          jailTurns = 0;
-          System.out.println("Player " + playerList[turn].getPlayOrder() + " is out of jail.");
-        }
-      }
-
-      for (int i = 0; i < propertyList.length; ++i){
-        propertyList[i].isOwned = false;
-      }
-    }
+      
+    
   }
 
   public void endGame(){
@@ -443,9 +455,10 @@ public int movePlayer(){
         System.out.println();
 
         for (int i = 0; i < jailSpaces.length; ++i){
-          if (playerList[turn].playerPosition == jailSpace[i].boardSpace){
+          if (playerList[turn].playerPosition == jailSpaces[i].boardSpace){
             System.out.println("You're going to jail!");
             playerList[turn].jailPlayer();
+            playerList[turn].inJail();
             changeTurns();
           }
         }
@@ -465,9 +478,10 @@ public int movePlayer(){
               changeTurns();
             }
 
-            if (propertyList[i].isOwned == true){
-              System.out.println("It is owned by Player " + propertyList[i].propertyOwner + ". You must pay them $" +propertyList[i].propertyValue);
+            if (propertyList[i].isOwned == true && propertyList[i].propertyOwner != playerList[turn].getPlayOrder()){
+              System.out.println("It is owned by Player " + propertyList[i].propertyOwner + ". You must pay $" +propertyList[i].propertyValue);
               playerList[turn].money -= propertyList[i].propertyValue;
+              
               System.out.println("Player " + playerList[turn].getPlayOrder() + " now has " + playerList[turn].money);
               System.out.println();
               changeTurns();
@@ -491,8 +505,8 @@ public int movePlayer(){
               changeTurns();
             }
 
-            if (utilityList[i].isOwned == true){
-              System.out.println("It is owned by Player " + utilityList[i].propertyOwner + ". You must pay them $" +utilityList[i].propertyValue);
+            if (utilityList[i].isOwned == true && utilityList[i].propertyOwner != playerList[turn].getPlayOrder()){
+              System.out.println("It is owned by Player " + utilityList[i].propertyOwner + ". You must pay $" +utilityList[i].propertyValue);
               playerList[turn].money -= utilityList[i].propertyValue;
               System.out.println("Player " + playerList[turn].getPlayOrder() + " now has " + playerList[turn].money);
               System.out.println();
@@ -516,8 +530,8 @@ public int movePlayer(){
               changeTurns();
             }
 
-            if (railroadList[i].isOwned == true){
-              System.out.println("It is owned by Player " + railroadList[i].propertyOwner + ". You must pay them $" +railroadList[i].propertyValue);
+            if (railroadList[i].isOwned == true && railroadList[i].propertyOwner != playerList[turn].getPlayOrder()){
+              System.out.println("It is owned by Player " + railroadList[i].propertyOwner + ". You must pay $" +railroadList[i].propertyValue);
               playerList[turn].money -= railroadList[i].propertyValue;
               System.out.println("Player " + playerList[turn].getPlayOrder() + " now has " + playerList[turn].money);
               System.out.println();
@@ -602,10 +616,10 @@ public int movePlayer(){
           System.out.println("Player " + playerList[turn].getPlayOrder() + "'s money is now $" + playerList[turn].money);
           playerList[turn].propertiesOwned++;
           System.out.println("Player " + playerList[turn].getPlayOrder() + " now owns " + playerList[turn].propertiesOwned + " properties.");
-          System.out.println();
           buyBtn.setDisable(true);
           dontBuy.setDisable(true);
           rollBtn.setDisable(false);
+          System.out.println();
           changeTurns();
           return;
         }
@@ -620,10 +634,10 @@ public int movePlayer(){
           System.out.println("Player " + playerList[turn].getPlayOrder() + "'s money is now $" + playerList[turn].money);
           playerList[turn].propertiesOwned++;
           System.out.println("Player " + playerList[turn].getPlayOrder() + " now owns " + playerList[turn].propertiesOwned + " properties.");
-          System.out.println();
           buyBtn.setDisable(true);
           dontBuy.setDisable(true);
           rollBtn.setDisable(false);
+          System.out.println();
           changeTurns();
           return;
         }
@@ -631,6 +645,9 @@ public int movePlayer(){
     });
 
     dontBuy.setOnAction(e -> {
+      rollBtn.setDisable(false);
+      buyBtn.setDisable(true);
+      dontBuy.setDisable(true);
       changeTurns();
     });
 

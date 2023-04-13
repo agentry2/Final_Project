@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "App",
+            "vmArgs": "--module-path 'c:\\Users\\antwa\\OneDrive\\Desktop\\College\\Sophomore\\Object-Oriented Computing\\javafx-sdk-19.0.2.1\\lib' --add-modules javafx.controls"
+        },
+        {
+            "type": "java",
             "name": "FlagAnthem",
             "request": "launch",
             "mainClass": "FlagAnthem",
@@ -22,8 +29,8 @@
             "type": "java",
             "name": "App",
             "request": "launch",
-            "mainClass": "App",
-            "vmArgs": "--module-path 'c:\\Users\\antwa\\OneDrive\\Desktop\\College\\Sophomore\\Object-Oriented Computing\\javafx-sdk-19.0.2.1\\lib' --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.media,javafx.swing"
+            "mainClass": "",
+            "vmArgs": "--module-path 'c:\\Users\\antwa\\OneDrive\\Desktop\\College\\Sophomore\\Object-Oriented Computing\\javafx-sdk-19.0.2.1\\lib' --add-modules javafx.base,javafx.controls,javafx.graphics"
         }
     ]
 }
